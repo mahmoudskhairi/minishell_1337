@@ -1,0 +1,106 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   organize.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mskhairi <mskhairi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/13 14:37:20 by rmarzouk          #+#    #+#             */
+/*   Updated: 2024/08/05 12:14:54 by mskhairi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "parser.h"
+
+int	join_limiter(int type, int state)
+{
+	if (((type == WHITE_SPACE && state == GENERAL) || type == REDIR_IN
+			|| type == REDIR_OUT || type == DREDIR_OUT || type == HERE_DOC
+			|| type == PIPE_LINE) && type != QOUTE && type != DOUBLE_QUOTE)
+		return (0);
+	return (1);
+}
+
+int	check_dol_join(t_item *list, int flag)
+{
+	if (!flag)
+	{
+		if (!list->content)
+			return (0);
+	}
+	if (flag)
+	{
+		if ((list && !(list->type == WHITE_SPACE && list->state == GENERAL)
+				&& list->type != QOUTE && list->type != DOUBLE_QUOTE)
+			|| (!ft_strcmp(list->content, "")))
+			return (0);
+	}
+	return (1);
+}
+
+void	handle_list(t_item *list, t_item **new_list, int *type,
+		char *join_content)
+{
+	while (list)
+	{
+		if (!check_dol_join(list, 0))
+		{
+			list = list->next;
+			continue ;
+		}
+		if (!check_dol_join(list, 1))
+			join_content = ft_strjoin(join_content, ft_strdup(list->content));
+		if (((join_content) && ((!list->next) || (list->next
+						&& (!join_limiter(list->next->type, list->next->state)
+							|| !join_limiter(list->type, 0))))))
+		{
+			if (!join_limiter(list->type, 0))
+				*type = list->type;
+			add_back_items(new_list, new_item(join_content,
+					ft_strlen(join_content), *type, GENERAL));
+			free(join_content);
+			join_content = NULL;
+			*type = WORD;
+		}
+		list = list->next;
+	}
+}
+
+void	last_tokinization(t_item *list)
+{
+	t_item	*tmp;
+
+	tmp = list;
+	while (tmp)
+	{
+		if (tmp->type == REDIR_IN && tmp->next)
+			tmp->next->type = REDIR_IN_FILE;
+		else if (tmp->type == REDIR_OUT && tmp->next)
+			tmp->next->type = REDIR_OUT_FILE;
+		else if (tmp->type == DREDIR_OUT && tmp->next)
+			tmp->next->type = DREDIR_OUT_FILE;
+		else if (tmp->type == HERE_DOC && tmp->next)
+			tmp->next->type = HERE_DOC_LIMITER;
+		tmp = tmp->next;
+	}
+}
+
+t_item	*organizer(t_env *env_l, t_item *list)
+{
+	t_item	*new_list;
+	int		flag;
+	char	*join_content;
+	int		type;
+
+	flag = 0;
+	type = WORD;
+	join_content = NULL;
+	new_list = NULL;
+	expander(env_l, list, NULL);
+	handle_list(list, &new_list, &type, join_content);
+	last_tokinization(new_list);
+	if (flag)
+		return (0);
+	ft_clear_items(&list);
+	return (new_list);
+}
