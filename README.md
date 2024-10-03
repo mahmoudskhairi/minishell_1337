@@ -1,7 +1,7 @@
 # Minishell 42 Project
 
 <p align="center">
-  <img src="bash.jpeg" alt="Libft Logo" style="max-width: 100%; height: auto;">
+  <img src="bash.jpeg" alt="Libft Logo" style="max-width: 600; height: 300px;">
 </p>
 
 ## Project Overview
