@@ -1,7 +1,7 @@
 # Minishell 42 Project
 
 <p align="center">
-  <img src="bash1.jpeg" alt="Project Logo" width="200"/>
+  <img src="bash1.jpeg" alt="Libft Logo" style="max-width: 100%; height: auto;">
 </p>
 
 ## Project Overview
@@ -133,7 +133,7 @@ Minishell includes robust error handling. If a command cannot be executed or if 
 <hr>
 
 <p align="center">
-  <img src="minishel_example1.png" alt="Project Logo" width="200"/>
+  <img src="minishel_example1.png" alt="Libft Logo" style="max-width: 100%; height: auto;">
 </p>
 
 <hr>
@@ -141,7 +141,7 @@ Minishell includes robust error handling. If a command cannot be executed or if 
 ### ==> comparison between my own minishell and bash
 
 <p align="center">
-  <img src="minishell_vs_bash.png" alt="Project Logo" width="200"/>
+  <img src="minishell_vs_bash.png" alt="Libft Logo" style="max-width: 100%; height: auto;">
 </p>
 
 <hr>
