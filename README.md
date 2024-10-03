@@ -1,7 +1,7 @@
 # Minishell 42 Project
 
 <p align="center">
-  <img src="minishell2.jpeg" alt="Libft Logo" style="max-width: 100%; height: auto;">
+  <img src="minishell.jpeg" alt="Libft Logo" style="max-width: 100%; height: auto;">
 </p>
 
 ## Project Overview
